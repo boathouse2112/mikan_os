@@ -26,7 +26,7 @@ jobs:
       - run: ls
       - run: sudo cp bootx64.efi mnt/EFI/BOOT/BOOTX64.EFI
       - run: ls
-      - run: sudo unmount mnt
+      - run: sudo umount mnt
       - run: ls
       - name: upload disk.img
         uses: actions/upload-artifact@v3
