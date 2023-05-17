@@ -31,6 +31,6 @@ jobs:
       - name: upload disk.img
         uses: actions/upload-artifact@v3
         with:
-          name: disk
+          name: disk.img
           path: |
             ${{github.workspace}}/disk.img
