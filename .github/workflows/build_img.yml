@@ -1,0 +1,36 @@
+name: Build FAT .img
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: qemu
+          version: 1.0
+      - run: qemu-img create -f raw dis.img 200M
+      - run: ls
+      - run: mkfs.fat -n "MIKAN OS" -s 2 -f 2 -R 32 -F 32 disk.img
+      - run: ls
+      - run: mkdir -p mnt
+      - run: ls
+      - run: sudo mount -o loop disk.img mnt
+      - run: ls
+      - run: sudo mkdir -p mnt/EFI/BOOT
+      - run: ls
+      - run: sudo cp bootx64.efi mnt/EFI/BOOT/BOOTX64.EFI
+      - run: ls
+      - run: sudo unmount mnt
+      - run: ls
+      - name: upload disk.img
+        uses: actions/upload-artifact@v3
+        with:
+          name: disk
+          path: |
+            ${{github.workspace}}/disk.img
